@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
   // be sure to include its associated Category and Tag data
   try {
     const productData = await Product.findAll();
-    //include: [{ model: Tag, through: Trip, as: "location-travellers" }],
+
     res.status(200).json(productData);
   } catch (err) {
     res.status(500).json(err);
@@ -21,8 +21,9 @@ router.get("/:id", async (req, res) => {
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
   try {
-    const productData = await product.findByPk(req.params.id, {
-      include: [{ model: Product, through: Category, as: "tag_products" }],
+    const productData = await Product.findOne({
+      include: [Category, { model: Tag, through: ProductTag }],
+      where: { id: req.params.id },
     });
 
     if (!productData) {
@@ -39,34 +40,13 @@ router.get("/:id", async (req, res) => {
 // create new product
 router.post("/", (req, res) => {
   /* req.body should look like this... */
-  {
-    product_name;
-    "Basketball", price;
-    200.0, stock;
-    3, tagIds;
-    [1, 2, 3, 4];
-  }
-  {
-    product_name;
-    "Football", price;
-    100.0, stock;
-    20, tagIds;
-    [21, 22, 23, 24];
-  }
-  {
-    product_name;
-    "Soccerball", price;
-    50.0, stock;
-    30, tagIds;
-    [31, 32, 33, 34];
-  }
-  {
-    product_name;
-    "Baseball", price;
-    25.0, stock;
-    40, tagIds;
-    [41, 42, 43, 44];
-  }
+  // {
+  //   product_name;
+  //   "Basketball", price;
+  //   200.0, stock;
+  //   3, tagIds;
+  //   [1, 2, 3, 4];
+  // }
 
   Product.create(req.body)
     .then((product) => {
