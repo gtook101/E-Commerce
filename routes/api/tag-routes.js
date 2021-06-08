@@ -19,7 +19,7 @@ router.get("/:id", async (req, res) => {
   // be sure to include its associated Product data
   try {
     const tagData = await Tag.findByPk(req.params.id, {
-      include: [{ model: Product, through: Category, as: "tag_products" }],
+      include: [{ model: Product }],
     });
 
     if (!tagData) {
@@ -80,3 +80,4 @@ router.delete("/:id", async (req, res) => {
 });
 
 module.exports = router;
+
